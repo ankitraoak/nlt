@@ -33,6 +33,10 @@
     "GROUPS": {
       "description": "Group Id",
       "value": ""
+    },
+    "SUDO_USERS": {
+      "description": "Admin/Owner",
+      "value": ""
     }
   }
 }
