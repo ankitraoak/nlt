@@ -1,7 +1,6 @@
-api_id = 24192661
-api_hash = "810a6dc0b2c2bf4db55db3a9ad999b56"
-bot_token = "6371494303:AAGMaUGJltbs9rBI9p3jPX77rBfPGpahvnc"
-auth_users = [5427627648]
-sudo_user = 5427627648
-log_channel = -1002130830455
-txt_channel = -1002130830455
+api_id = int(os.environ.get("API_ID"))
+api_hash = os.environ.get("API_HASH")
+bot_token = os.environ.get("BOT_TOKEN")
+auth_users = int(os.environ.get("AUTH_USERS"))
+sudo_user = int(os.environ.get("SUDO_USERS"))
+log_channel = int(os.environ.get("GROUPS"))
