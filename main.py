@@ -510,6 +510,7 @@ async def txt_handler(bot: Client, m: Message):
                 prog = await m.reply_text(Show)
                 cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
                 if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
+		       url = url.replace(" ", "%20")  # Replace spaces with %20 in the URL	
                     try:
                         ka=await helper.aio(url,name)
                         await prog.delete (True)
