@@ -110,7 +110,7 @@ def convert_links(links):
 async def convert_pdf_command(client, message: Message):
     await message.reply_text("Please send the text file.")
     # Wait for the text file
-    input_message = await app.listen(message.chat.id)
+    input_message = await bot.listen(message.chat.id)
     if input_message.document:
         document = input_message.document
         if document.mime_type == "text/plain":
