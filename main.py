@@ -499,9 +499,9 @@ async def txt_handler(bot: Client, m: Message):
             urlm = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').strip()
 
             urla = links[i].split('://', 1)[1].split('.pdf', 1)[0] + '.pdf' if '://' in links[i] else 'nolinkfound'
-            urlak = urla
+            urlak =  'https://'  + urla if urla != 'nolinkfound' else 'NoLinkFound'
             urlaky = urlak.replace(' ', '%20')
-            print(urlaky)
+            
 
             url = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').replace("d1d34p8vz63oiq", "d26g5bnklkwsh4").replace("pw2.pc.cdn.bitgravity.com","d26g5bnklkwsh4.cloudfront.net").replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","").replace("d3nzo6itypaz07", "d26g5bnklkwsh4").replace("dn6x93wafba93", "d26g5bnklkwsh4").replace("d2tiz86clzieqa", "d26g5bnklkwsh4").replace("vod.teachx.in", "d3igdi2k1ohuql.cloudfront.net").replace("downloadappx.appx.co.in", "d33g7sdvsfd029.cloudfront.net").strip()
             parsed_url = urlparse(url)
