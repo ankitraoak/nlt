@@ -121,9 +121,9 @@ async def fix(bot: Client, m: Message):
     
     input_msg = await bot.listen(editable.chat.id)
     
-    if input_msg and input_msg.text:
+    if input_msg and input_msg.document and input_msg.document.file_name.endswith('.txt'):
         # Save the received text as a .txt file
-        file_content = input_msg.text
+        file_content = input_msg.txt
         file_path = f"./downloads/{m.chat.id}/input.txt"
         with open(file_path, 'w') as file:
             file.write(file_content)
