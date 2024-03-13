@@ -88,6 +88,41 @@ def humanbytes(size):
         size /= power
         n += 1
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
+from telethon import Client, events
+import os
+
+# Assuming you've set up the Telethon client
+
+@bot.on(events.NewMessage(pattern='/pdf'))
+async def c_pdf(event):
+    await event.respond("**Hello, I am CW pdf DL Bot.**\n\nSend TXT file to download.")
+
+    # Get the incoming message containing the text file
+    input_message = await bot.get_messages(event.chat_id, ids=event.message.id)
+    
+    # Download the text file
+    file_path = await bot.download_media(input_message, file="./")
+
+    try:
+        # Read the content of the text file
+        with open(file_path, "r") as f:
+            content = f.read().split("\n")
+            fixed_urls = []
+            # Process each URL in the text file
+            for url in content:
+                # Fix the URL by replacing spaces with %20
+                fixed_url = url.strip().replace(' ', '%20')
+                fixed_urls.append(fixed_url)
+            
+            # Send the modified URLs back to the user as a message
+            await bot.send_message(event.chat_id, "\n".join(fixed_urls))
+                
+    except Exception as e:
+        print("Error:", e)
+    
+    # Cleanup: delete the downloaded text file
+    os.remove(file_path)
+	
 
 @bot.on_message(filters.command(["GR"])&(filters.chat(auth_users)))
 async def c_pdf(bot: Client, m: Message):
@@ -510,7 +545,7 @@ async def txt_handler(bot: Client, m: Message):
                 prog = await m.reply_text(Show)
                 cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
                 if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
-                    url = urllib.parse.quote_plus(url)	
+                	
                     try:
                         ka=await helper.aio(url,name)
                         await prog.delete (True)
