@@ -90,12 +90,6 @@ def humanbytes(size):
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
 
-from pyrogram import Client, filters
-from pyrogram.types import Message
-
-auth_users = [123456789]  # Replace with your authorized users' IDs
-
-bot = Client("my_bot")
 
 # Function to process links from a text file
 def process_links(x, output_file):
