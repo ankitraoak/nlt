@@ -89,12 +89,15 @@ def humanbytes(size):
         n += 1
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
-@bot.on(events.NewMessage(pattern='/pdf'))
-async def c_pdf(event):
-    await event.respond("**Hello, I am CW pdf DL Bot.**\n\nSend TXT file to download.")
+#@bot.on(events.NewMessage(pattern='/pdf'))
+#async def c_pdf(event):
+#    await event.respond("**Hello, I am CW pdf DL Bot.**\n\nSend TXT file to download.")
+@bot.on_message(filters.command(["pdf"])&(filters.chat(auth_users)))
+async def c_pdf(bot: Client, m: Message):
 
+    editable = await m.reply_text("**Hello I am CW pdf DL Bot\n\nSend TXT To convert.**")
     # Get the incoming message containing the text file
-    input_message = await bot.get_messages(event.chat_id, ids=event.message.id)
+    input_message = await bot.listen(editable.chat.id)
     
     # Download the text file
     file_path = await bot.download_media(input_message, file="./")
@@ -111,8 +114,10 @@ async def c_pdf(event):
                 fixed_urls.append(fixed_url)
             
             # Send the modified URLs back to the user as a message
-            await bot.send_message(event.chat_id, "\n".join(fixed_urls))
-                
+            #await bot.send_message(event.chat_id, "\n".join(fixed_urls))
+            await m.reply_document(document=fixed_urls,caption="Here is your fixed file.")
+       # os.remove(txt_file)
+
     except Exception as e:
         print("Error:", e)
     
