@@ -121,7 +121,20 @@ async def fix(bot: Client, m: Message):
     
     input_msg = await bot.listen(editable.chat.id)
     
-    if input_msg and input_msg.document and input_msg.document.file_name.endswith('.txt'):
+    
+    if input_msg.document.file_name.endswith('.txt'):
+        # Download the document
+        await input_msg.download(file_path)
+        
+        # Process the links from the input file
+        process_links(file_path, output_file)
+
+        # Optionally, you can send the processed links back to the user
+        await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
+    else:
+        await m.reply_text("Please send a .txt file.")
+
+
         # Save the received text as a .txt file
         file_content = input_msg.txt
         file_path = f"./downloads/{m.chat.id}/input.txt"
@@ -131,13 +144,6 @@ async def fix(bot: Client, m: Message):
         path = f"./downloads/{m.chat.id}"
         output_file = f"{path}/processed_links.txt"
 
-        # Process the links from the input file
-        process_links(file_path, output_file)
-
-        # Optionally, you can send the processed links back to the user
-        await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
-    else:
-        await m.reply_text("Please send a .txt file.")
 
 
 
