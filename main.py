@@ -88,10 +88,6 @@ def humanbytes(size):
         size /= power
         n += 1
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
-from telethon import Client, events
-import os
-
-# Assuming you've set up the Telethon client
 
 @bot.on(events.NewMessage(pattern='/pdf'))
 async def c_pdf(event):
