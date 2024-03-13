@@ -91,6 +91,8 @@ def humanbytes(size):
 
 
 
+
+
 # Function to process links from a text file
 def process_links(x, output_file):
     output = []
@@ -106,13 +108,15 @@ def process_links(x, output_file):
             urlak = 'https://' + urla if urla != 'nolinkfound' else 'NoLinkFound'
             urlaky = urlak.replace(' ', '%20')
             output.append(prefix + urlaky)
-    # Write the processed links to an output file (placeholder)
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    # Write the processed links to an output file
     with open(output_file, 'w') as out_f:
         out_f.write("\n".join(output))
 
 
 @bot.on_message(filters.command(["fix"]) & filters.chat(auth_users))
-async def vision_pdf(bot: Client, m: Message):
+async def fix(bot: Client, m: Message):
     editable = await m.reply_text("**Hello Dear,** I am Text File url converter Bot.\nI can download **PDFs of vision** from text file one by one.\n\n**Developer: GrootJI** \n**Language:** Python\n**Framework:** 🔥Pyrogram\n\nNow Send Your **TXT File:-**\n")
     input_msg = await bot.listen(editable.chat.id)
     # Assuming input_msg.document.file_id contains the file ID of the sent text file
@@ -128,6 +132,7 @@ async def vision_pdf(bot: Client, m: Message):
 
     # Optionally, you can send the processed links back to the user
     await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
+
 
 
 
