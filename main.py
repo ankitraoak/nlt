@@ -90,10 +90,17 @@ def humanbytes(size):
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
 
-# Define a function to process links from input file and write formatted links to output file
-def process_links(input_file, output_file):
+from pyrogram import Client, filters
+from pyrogram.types import Message
+
+auth_users = [123456789]  # Replace with your authorized users' IDs
+
+bot = Client("my_bot")
+
+# Function to process links from a text file
+def process_links(x, output_file):
     output = []
-    with open(input_file, 'r') as f:
+    with open(x, 'r') as f:
         for line in f:
             link = line.strip()
             link_parts = link.split(':')
@@ -105,28 +112,31 @@ def process_links(input_file, output_file):
             urlak = 'https://' + urla if urla != 'nolinkfound' else 'NoLinkFound'
             urlaky = urlak.replace(' ', '%20')
             output.append(prefix + urlaky)
+    # Write the processed links to an output file (placeholder)
+    with open(output_file, 'w') as out_f:
+        out_f.write("\n".join(output))
 
-    with open(output_file, 'w') as f:
-        for link in output:
-            f.write(link + '\n')
 
-# Define a command handler for /fix command
-@bot.on_message(filters.command(["fix"]) & (filters.chat(auth_users)))
-def fix_command(bot: Client, m: Message):
-    if m.document:
-        input_file_info = bot.get_file(m.document.file_id)
-        input_file_path = os.path.join("downloads", m.document.file_name)
-        input_file_info.download(input_file_path)
-        
-        output_file = "formatted_links.txt"
-        process_links(input_file_path, output_file)
-        with open(output_file, 'rb') as f:
-            bot.send_document(m.chat.id, f, caption="Formatted links")
-        
-        with open(input_file_path, 'rb') as f:
-            bot.send_document(m.chat.id, f, caption="Input links")
-    else:
-        bot.send_message(m.chat.id, "Please upload the input links file.")
+@bot.on_message(filters.command(["fix"]) & filters.chat(auth_users))
+async def vision_pdf(bot: Client, m: Message):
+    editable = await m.reply_text("**Hello Dear,** I am Text File url converter Bot.\nI can download **PDFs of vision** from text file one by one.\n\n**Developer: GrootJI** \n**Language:** Python\n**Framework:** 🔥Pyrogram\n\nNow Send Your **TXT File:-**\n")
+    input_msg = await bot.listen(editable.chat.id)
+    # Assuming input_msg.document.file_id contains the file ID of the sent text file
+    # You need to adjust the above line according to your bot logic for handling files
+    x = await bot.download_media(input_msg.document.file_id, file_name="input.txt")
+    await input_msg.delete(True)
+
+    path = f"./downloads/{m.chat.id}"
+    output_file = f"{path}/processed_links.txt"
+
+    # Process the links from the input file
+    process_links(x, output_file)
+
+    # Optionally, you can send the processed links back to the user
+    await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
+
+
+
 
 
 #
