@@ -93,10 +93,11 @@ def humanbytes(size):
 
 
 
-# Function to process links from a text file
-def process_links(x, output_file):
+import os
+
+def process_links(input_file, output_file):
     output = []
-    with open(x, 'r') as f:
+    with open(input_file, 'r') as f:
         for line in f:
             link = line.strip()
             link_parts = link.split(':')
@@ -114,37 +115,21 @@ def process_links(x, output_file):
     with open(output_file, 'w') as out_f:
         out_f.write("\n".join(output))
 
-
 @bot.on_message(filters.command(["fix"]) & filters.chat(auth_users))
 async def fix(bot: Client, m: Message):
     editable = await m.reply_text("**Hello Dear,** I am Text File url converter Bot.\nI can download **PDFs of vision** from text file one by one.\n\n**Developer: GrootJI** \n**Language:** Python\n**Framework:** 🔥Pyrogram\n\nNow Send Your **TXT File:-**\n")
-    
     input_msg = await bot.listen(editable.chat.id)
     
+    file_path = await input_msg.download(file="./downloads/")
+
+    # Define the output file path
+    output_file = f"{os.path.splitext(file_path)[0]}_processed.txt"
     
-    if input_msg.document.file_name.endswith('.txt'):
-        # Download the document
-        await input_msg.download(file_path)
-        
-        # Process the links from the input file
-        process_links(file_path, output_file)
+    # Process the links from the input file
+    process_links(file_path, output_file)
 
-        # Optionally, you can send the processed links back to the user
-        await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
-    else:
-        await m.reply_text("Please send a .txt file.")
-
-
-        # Save the received text as a .txt file
-        file_content = input_msg.txt
-        file_path = f"./downloads/{m.chat.id}/input.txt"
-        with open(file_path, 'w') as file:
-            file.write(file_content)
-
-        path = f"./downloads/{m.chat.id}"
-        output_file = f"{path}/processed_links.txt"
-
-
+    # Optionally, you can send the processed links back to the user
+    await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
 
 
 
