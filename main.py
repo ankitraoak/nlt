@@ -92,37 +92,37 @@ def humanbytes(size):
 #@bot.on(events.NewMessage(pattern='/pdf'))
 #async def c_pdf(event):
 #    await event.respond("**Hello, I am CW pdf DL Bot.**\n\nSend TXT file to download.")
-@bot.on_message(filters.command(["pdf"]) & (filters.chat(auth_users)))
-async def d_pdf(bot: Client, m: Message):
+#@bot.on_message(filters.command(["pdf"]) & (filters.chat(auth_users)))
+#async def d_pdf(bot: Client, m: Message):
 
-    editable = await m.reply_text("**Hello I am CW pdf DL Bot\n\nSend TXT To convert.**")
+ #   editable = await m.reply_text("**Hello I am CW pdf DL Bot\n\nSend TXT To convert.**")
     # Get the incoming message containing the text file
-    input_message = await bot.listen(editable.chat.id)
+  #  input_message = await bot.listen(editable.chat.id)
     
     # Download the text file
-    file_path = await input_message.download(file_name="./")
+   # file_path = await input_message.download(file_name="./")
 
-    try:
+  #  try:
         # Read the content of the text file
-        with open(file_path, "r") as f:
-            content = f.read().split("\n")
-            fixed_urls = []
+   #     with open(file_path, "r") as f:
+    #        content = f.read().split("\n")
+     #       fixed_urls = []
             # Process each URL in the text file
-            for url in content:
+      #      for url in content:
                 # Fix the URL by replacing spaces with %20
-                fixed_url = url.strip().replace(' ', '%20')
-                fixed_urls.append(fixed_url)
+       #         fixed_url = url.strip().replace(' ', '%20')
+        #        fixed_urls.append(fixed_url)
             
             # Create a temporary text file containing the fixed URLs
-            temp_file_path = "fixed_urls.txt"
-            with open(temp_file_path, "w") as temp_file:
-                temp_file.write("\n".join(fixed_urls))
+         #   temp_file_path = "fixed_urls.txt"
+          #  with open(temp_file_path, "w") as temp_file:
+           #     temp_file.write("\n".join(fixed_urls))
             
         # Send the temporary text file as a document
-        await m.reply_document(document=temp_file_path, caption="Here is your fixed file.")
+   #     await m.reply_document(document=temp_file_path, caption="Here is your fixed file.")
             
      # Remove the temporary text file
-    os.remove(temp_file_path)
+   # os.remove(temp_file_path)
 	
 
 @bot.on_message(filters.command(["GR"])&(filters.chat(auth_users)))
