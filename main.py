@@ -89,14 +89,47 @@ def humanbytes(size):
         n += 1
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
+
+def convert_links(links):
+    output = []
+    for link in links:
+        link_parts = link.split(':')
+        prefix = link_parts[0] + ': ' if len(link_parts) > 1 else ''
+        if '.pdf' in link:
+            urla = link.split('://', 1)[1].split('.pdf', 1)[0] + '.pdf'
+        else:
+            urla = link.split('://', 1)[1].split('\n', 1)[0]
+        urlak = 'https://' + urla if urla != 'nolinkfound' else 'NoLinkFound'
+        urlaky = urlak.replace(' ', '%20')
+        output.append(prefix + urlaky)
+    
+    return output
+
+@bot.on_message(filters.command("pdf"))
+async def convert_pdf_command(client, message: Message):
+    if message.document:
+        document = message.document
+        if document.mime_type == "text/plain":
+            input_file = await document.download()
+            with open(input_file, 'r') as file:
+                links = file.readlines()
+            output = convert_links(links)
+            output_text = "\n".join(output)
+            await message.reply_text(output_text)
+            os.remove(input_file)
+        else:
+            await message.reply_text("Please send a text file.")
+    else:
+        await message.reply_text("Please send a text file.")
+
 #@bot.on(events.NewMessage(pattern='/pdf'))
 #async def c_pdf(event):
-#    await event.respond("**Hello, I am CW pdf DL Bot.**\n\nSend TXT file to download.")
+ #   await event.respond("**Hello, I am CW pdf DL Bot.**\n\nSend TXT file to download.")
 #@bot.on_message(filters.command(["pdf"]) & (filters.chat(auth_users)))
 #async def d_pdf(bot: Client, m: Message):
 
  #   editable = await m.reply_text("**Hello I am CW pdf DL Bot\n\nSend TXT To convert.**")
-    # Get the incoming message containing the text file
+   # Get the incoming message containing the text file
   #  input_message = await bot.listen(editable.chat.id)
     
     # Download the text file
