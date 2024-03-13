@@ -91,43 +91,35 @@ def humanbytes(size):
 
 
 
-def convert_links(links):
+# Define a function to process links from input file and write formatted links to output file
+def process_links(input_file, output_file):
     output = []
-    for link in links:
-        link_parts = link.split(':')
-        prefix = link_parts[0] + ': ' if len(link_parts) > 1 else ''
-        if '.pdf' in link:
-            urla = link.split('://', 1)[1].split('.pdf', 1)[0] + '.pdf'
-        else:
-            urla = link.split('://', 1)[1].split('\n', 1)[0]
-        urlak = 'https://' + urla if urla != 'nolinkfound' else 'NoLinkFound'
-        urlaky = urlak.replace(' ', '%20')
-        output.append(prefix + urlaky)
-    
-    return output
+    with open(input_file, 'r') as f:
+        for line in f:
+            link = line.strip()
+            link_parts = link.split(':')
+            prefix = link_parts[0] + ': ' if len(link_parts) > 1 else ''
+            if '.pdf' in link:
+                urla = link.split('://', 1)[1].split('.pdf', 1)[0] + '.pdf'
+            else:
+                urla = link.split('://', 1)[1].split('\n', 1)[0]
+            urlak = 'https://' + urla if urla != 'nolinkfound' else 'NoLinkFound'
+            urlaky = urlak.replace(' ', '%20')
+            output.append(prefix + urlaky)
 
-@bot.on_message(filters.command("pdf"))
-async def convert_pdf_command(client, message: Message):
-    await message.reply_text("Please send the text file.")
-    # Wait for the text file
-    input_message = await bot.listen(message.chat.id)
-    if input_message.document:
-        document = input_message.document
-        if document.mime_type == "text/plain":
-            input_file = await bot.listen(editable.chat.id)
-            with open(input_file, 'r') as file:
-                links = file.readlines()
-            output = convert_links(links)
-            output_text = "\n".join(output)
-            with open("output.txt", "w") as output_file:
-                output_file.write(output_text)
-            await message.reply_document(document="output.txt", caption="Converted Links")
-            os.remove(input_file)
-            os.remove("output.txt")
-        else:
-            await message.reply_text("Please send a text file.")
-    else:
-        await message.reply_text("Please send a text file.")
+    with open(output_file, 'w') as f:
+        for link in output:
+            f.write(link + '\n')
+
+# Define a command handler
+@bot.on_message(filters.command(["fix"])&(filters.chat(auth_users)))
+def fix_command(client, message):
+    input_file = "input_links.txt"
+    output_file = "formatted_links.txt"
+    process_links(input_file, output_file)
+    with open(output_file, 'rb') as f:
+        client.send_document(message.chat.id, f, caption="Formatted links")
+
 
 
 #@bot.on(events.NewMessage(pattern='/pdf'))
