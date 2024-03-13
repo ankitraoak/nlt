@@ -92,6 +92,8 @@ def humanbytes(size):
 #@bot.on(events.NewMessage(pattern='/pdf'))
 #async def c_pdf(event):
 #    await event.respond("**Hello, I am CW pdf DL Bot.**\n\nSend TXT file to download.")
+import re
+
 @bot.on_message(filters.command(["pdf"]) & (filters.chat(auth_users)))
 async def d_pdf(bot: Client, m: Message):
 
@@ -105,18 +107,22 @@ async def d_pdf(bot: Client, m: Message):
     try:
         # Read the content of the text file
         with open(file_path, "r") as f:
-            content = f.read().split("\n")
-            fixed_urls = []
-            # Process each URL in the text file
-            for url in content:
-                # Fix the URL by replacing spaces with %20
-                fixed_url = url.strip().replace(' ', '%20')
-                fixed_urls.append(fixed_url)
+            content = f.read()
             
-            # Create a temporary text file containing the fixed URLs
-            temp_file_path = "fixed_urls.txt"
+            # Use regular expression to find URLs starting with http and ending with .pdf
+            urls = re.findall(r'http\S*\.pdf', content)
+            
+            fixed_content = content
+            # Process each URL found in the text file
+            for url in urls:
+                # Fix the URL by replacing spaces with %20
+                fixed_url = url.replace(' ', '%20')
+                fixed_content = fixed_content.replace(url, fixed_url)
+            
+            # Create a temporary text file containing the fixed content
+            temp_file_path = "fixed_content.txt"
             with open(temp_file_path, "w") as temp_file:
-                temp_file.write("\n".join(fixed_urls))
+                temp_file.write(fixed_content)
             
             # Send the temporary text file as a document
             await m.reply_document(document=temp_file_path, caption="Here is your fixed file.")
