@@ -118,11 +118,11 @@ async def d_pdf(bot: Client, m: Message):
             with open(temp_file_path, "w") as temp_file:
                 temp_file.write("\n".join(fixed_urls))
             
-            # Send the temporary text file as a document
-            await m.reply_document(document=temp_file_path, caption="Here is your fixed file.")
+        # Send the temporary text file as a document
+        await m.reply_document(document=temp_file_path, caption="Here is your fixed file.")
             
-            # Remove the temporary text file
-            os.remove(temp_file_path)
+     # Remove the temporary text file
+    os.remove(temp_file_path)
 	
 
 @bot.on_message(filters.command(["GR"])&(filters.chat(auth_users)))
