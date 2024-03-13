@@ -114,7 +114,7 @@ async def convert_pdf_command(client, message: Message):
     if input_message.document:
         document = input_message.document
         if document.mime_type == "text/plain":
-            input_file = await document.download()
+            input_file = await bot.listen(editable.chat.id)
             with open(input_file, 'r') as file:
                 links = file.readlines()
             output = convert_links(links)
