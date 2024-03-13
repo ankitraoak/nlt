@@ -131,7 +131,7 @@ async def fix(bot: Client, m: Message):
     process_links(x, output_file)
 
     # Optionally, you can send the processed links back to the user
-    await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
+    await m.reply_text(document=output_file,caption="Here is your txt file.")
 
 
 
