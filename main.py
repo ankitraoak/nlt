@@ -494,9 +494,9 @@ async def txt_handler(bot: Client, m: Message):
     try:
         await bot.send_message(log_channel, f"**•File name** - `{file_name}`({raw_text0})\n**•Total Links Found In TXT** - `{len(links)}`\n**•Starts from** - `{raw_text}`\n**•Resolution** - `{res}`({raw_text22})\n**•Caption** - `{raw_text7}`\n**•Thumbnail** - `{thumb}`\n\n©{credit}")
         for i in range(count-1, len(links)):
-            urlx = links[i].split('://', 1)[1].split(' ', 1)[0] if '://' in links[i] else 'nolinkfound'
+            urlx = links[i].split('://', 1)[1].split('   ', 1)[0] if '://' in links[i] else 'nolinkfound'
             urly =  'https://'  + urlx if urlx != 'nolinkfound' else 'NoLinkFound'
-            urlm = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').strip()
+            urlm = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').replace(' ', '%20').strip()
 
             urla = links[i].split('://', 1)[1].split('.pdf', 1)[0] + '.pdf' if '://' in links[i] else 'nolinkfound'
             urlak =  'https://'  + urla if urla != 'nolinkfound' else 'NoLinkFound'
@@ -555,7 +555,7 @@ async def txt_handler(bot: Client, m: Message):
                 	
                     try:
                         
-                        ka=await helper.aio(urlaky,name)
+                        ka=await helper.aio(url,name)
                         await prog.delete (True)
                         time.sleep(1)
                         reply = await m.reply_text(f"Trying To Upload - `{name}`")
@@ -573,7 +573,7 @@ async def txt_handler(bot: Client, m: Message):
                         time.sleep(e.x+1)
                         continue
                 else:
-                    res_file = await helper.download_video(urlaky,cmd, name)
+                    res_file = await helper.download_video(url,cmd, name)
                     filename = res_file
                     await helper.send_vid(bot, m,cc,filename,thumb,name,prog)
                     count+=1
