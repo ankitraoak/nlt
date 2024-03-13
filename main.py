@@ -497,7 +497,9 @@ async def txt_handler(bot: Client, m: Message):
             urlx = links[i].split('://', 1)[1].split(' ', 1)[0] if '://' in links[i] else 'nolinkfound'
             urly =  'https://'  + urlx if urlx != 'nolinkfound' else 'NoLinkFound'
             urlm = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').strip()
-            urlak = urlx
+
+            urla = links[i].split('://', 1)[1].split('.pdf', 1)[0] + '.pdf' if '://' in links[i] else 'nolinkfound'
+            urlak = urla
             urlaky = urlak.replace(' ', '%20')
             print(urlaky)
 
