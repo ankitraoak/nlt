@@ -90,7 +90,6 @@ def humanbytes(size):
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
 
-
 # Define a function to process links from input file and write formatted links to output file
 def process_links(input_file, output_file):
     output = []
@@ -111,14 +110,27 @@ def process_links(input_file, output_file):
         for link in output:
             f.write(link + '\n')
 
-# Define a command handler
-@bot.on_message(filters.command(["fix"])&(filters.chat(auth_users)))
-def fix_command(client, message):
-    input_file = "input_links.txt"
-    output_file = "formatted_links.txt"
-    process_links(input_file, output_file)
-    with open(output_file, 'rb') as f:
-        client.send_document(message.chat.id, f, caption="Formatted links")
+# Define a command handler for /fix command
+@bot.on_message(filters.command(["fix"]) & (filters.chat(auth_users)))
+def fix_command(bot: Client, m: Message):
+    if m.document:
+        input_file_info = bot.get_file(m.document.file_id)
+        input_file_path = os.path.join("downloads", m.document.file_name)
+        input_file_info.download(input_file_path)
+        
+        output_file = "formatted_links.txt"
+        process_links(input_file_path, output_file)
+        with open(output_file, 'rb') as f:
+            bot.send_document(m.chat.id, f, caption="Formatted links")
+        
+        with open(input_file_path, 'rb') as f:
+            bot.send_document(m.chat.id, f, caption="Input links")
+    else:
+        bot.send_message(m.chat.id, "Please upload the input links file.")
+
+#
+
+
 
 
 
