@@ -90,6 +90,7 @@ def humanbytes(size):
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
 
+
 def convert_links(links):
     output = []
     for link in links:
@@ -107,20 +108,27 @@ def convert_links(links):
 
 @bot.on_message(filters.command("pdf"))
 async def convert_pdf_command(client, message: Message):
-    if message.document:
-        document = message.document
+    await message.reply_text("Please send the text file.")
+    # Wait for the text file
+    input_message = await app.listen(message.chat.id)
+    if input_message.document:
+        document = input_message.document
         if document.mime_type == "text/plain":
             input_file = await document.download()
             with open(input_file, 'r') as file:
                 links = file.readlines()
             output = convert_links(links)
             output_text = "\n".join(output)
-            await message.reply_text(output_text)
+            with open("output.txt", "w") as output_file:
+                output_file.write(output_text)
+            await message.reply_document(document="output.txt", caption="Converted Links")
             os.remove(input_file)
+            os.remove("output.txt")
         else:
             await message.reply_text("Please send a text file.")
     else:
         await message.reply_text("Please send a text file.")
+
 
 #@bot.on(events.NewMessage(pattern='/pdf'))
 #async def c_pdf(event):
