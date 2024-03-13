@@ -118,20 +118,26 @@ def process_links(x, output_file):
 @bot.on_message(filters.command(["fix"]) & filters.chat(auth_users))
 async def fix(bot: Client, m: Message):
     editable = await m.reply_text("**Hello Dear,** I am Text File url converter Bot.\nI can download **PDFs of vision** from text file one by one.\n\n**Developer: GrootJI** \n**Language:** Python\n**Framework:** 🔥Pyrogram\n\nNow Send Your **TXT File:-**\n")
+    
     input_msg = await bot.listen(editable.chat.id)
-    # Assuming input_msg.document.file_id contains the file ID of the sent text file
-    # You need to adjust the above line according to your bot logic for handling files
-    x = await bot.download_media(input_msg.document.file_id, file_name="input.txt")
-    await input_msg.delete(True)
+    
+    if input_msg and input_msg.text:
+        # Save the received text as a .txt file
+        file_content = input_msg.text
+        file_path = f"./downloads/{m.chat.id}/input.txt"
+        with open(file_path, 'w') as file:
+            file.write(file_content)
 
-    path = f"./downloads/{m.chat.id}"
-    output_file = f"{path}/processed_links.txt"
+        path = f"./downloads/{m.chat.id}"
+        output_file = f"{path}/processed_links.txt"
 
-    # Process the links from the input file
-    process_links(x, output_file)
+        # Process the links from the input file
+        process_links(file_path, output_file)
 
-    # Optionally, you can send the processed links back to the user
-    await m.reply_text(document=output_file,caption="Here is your txt file.")
+        # Optionally, you can send the processed links back to the user
+        await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
+    else:
+        await m.reply_text("Please send a .txt file.")
 
 
 
