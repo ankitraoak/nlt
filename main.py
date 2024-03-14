@@ -25,14 +25,12 @@ import sys ,io
 import re
 import os
 from pyrogram.types import InputMediaDocument
-import time
 import random 
 from psutil import disk_usage, cpu_percent, swap_memory, cpu_count, virtual_memory, net_io_counters, boot_time
 import asyncio
 from pytube import Playlist
 from pyrogram import Client, filters
 from pyrogram.errors.exceptions import MessageIdInvalid
-import os
 from moviepy.editor import *
 import yt_dlp
 from bs4 import BeautifulSoup
@@ -120,48 +118,6 @@ async def fix(bot: Client, m: Message):
 
 
 
-@bot.on_message(filters.command(["GR"])&(filters.chat(auth_users)))
-async def c_pdf(bot: Client, m: Message):
-    editable = await m.reply_text("**Hello I am CW pdf DL Bot\n\nSend TXT To Download.**")
-    input99: Message = await bot.listen(editable.chat.id)
-    x = await input99.download()
-    await input99.delete(True)
-    try:         
-        with open(x, "r") as f:
-             content = f.read()
-             content = content.split("\n")
-        links = []
-        for i in content:
-           if i != '':
-                 links.append(i.split("::", 1))
-        os.remove(x)
-    except Exception as e:
-        logging.error(e)
-        await m.reply_text("Invalid file input ❌.")
-        os.remove(x)
-        return
-        
-    editable = await m.reply_text(f"Total links found are {len(links)}\n\nSend From where you want to download,\n\nInitial is 0")
-    input1: Message = await bot.listen(editable.chat.id)
-    count = input1.text
-    count = int(count)      	
-    	            
-    await m.reply_text("**Enter Batch Name**")
-    inputy: Message = await bot.listen(editable.chat.id)
-    raw_texty = inputy.text        
-    try:
-        for i in range(count, len(links)):
-          name = links[i][0]
-          url = links[i][1]
-          cc = f'{str(count).zfill(3)}. {name}.pdf\n\n**Batch:-** {raw_texty}\n\n'
-          os.system(f'yt-dlp  "{url}" -N 200 -o "{name}.pdf"')
-          await m.reply_document(f'{name}.pdf', caption=cc)
-          count += 1
-          os.remove(f'{name}.pdf')
-          time.sleep(3)
-    except Exception as e:
-        await m.reply_text(e)
-    await m.reply_text("Done ✅")
 
 @bot.on_message(filters.command(["stats"]))
 async def stats(_,event: Message):
@@ -208,7 +164,7 @@ async def terms_han(bot: Client, m: Message):
 	
 	await m.reply_text("Dear user,\n\nWelcome to our video downloader bot on Telegram. Before you start using our bot, please read these terms and conditions carefully.\n\nBy using our bot, you agree to the following terms and conditions:\n\n1. Our bot is intended for personal, non-commercial use only. You are responsible for any content that you download through our bot and you should ensure that you have the necessary permissions and rights to use and share the content.\n\n2. Downloading copyrighted content through our bot is strictly prohibited. If we receive any complaints of copyright infringement, we reserve the right to take down the infringing content and terminate the user's access to our bot.\n\n3. We do not store any of your personal data or download history. Your privacy and security are important to us, and we have taken all necessary measures to ensure that your information is safe and protected.\n\n4. We reserve the right to suspend or terminate the bot's services at any time and for any reason.\n\n5. By using our bot, you agree to indemnify and hold us harmless from any claims, damages,\nor losses arising from your use of our bot.\n\nIf you have any questions or concerns about our terms and conditions, please contact us.\n\nThank you for using our video downloader bot on Telegram.\n\nBest regards,\n@Grootji_bot")
 	
-@bot.on_message(filters.command(["GRO"])&(filters.chat(auth_users)))
+@bot.on_message(filters.command(["GR"])&(filters.chat(auth_users)))
 async def vision_pdf(bot: Client, m: Message):
     editable = await m.reply_text("**Hello Dear,** I am Text File Downloader Bot.\nI can download **PDFs of vision** from text file one by one.\n\n**Developer: GrootJI** \n**Language:** Python\n**Framework:** 🔥Pyrogram\n\nNow Send Your **TXT File:-**\n")
     input: Message = await bot.listen(editable.chat.id)
@@ -494,6 +450,11 @@ async def txt_handler(bot: Client, m: Message):
             urlm = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').strip()
             url = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').replace("d1d34p8vz63oiq", "d26g5bnklkwsh4").replace("pw2.pc.cdn.bitgravity.com","d26g5bnklkwsh4.cloudfront.net").replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","").replace("d3nzo6itypaz07", "d26g5bnklkwsh4").replace("dn6x93wafba93", "d26g5bnklkwsh4").replace("d2tiz86clzieqa", "d26g5bnklkwsh4").replace("vod.teachx.in", "d3igdi2k1ohuql.cloudfront.net").replace("downloadappx.appx.co.in", "d33g7sdvsfd029.cloudfront.net").strip()
             parsed_url = urlparse(url)
+
+            urla = links[i].split('://', 1)[1].split('.pdf', 1)[0] + '.pdf' if '://' in links[i] else 'nolinkfound'
+            urlak =  'https://'  + urla if urla != 'nolinkfound' else 'NoLinkFound'
+            urlaky = urlak.replace(' ', '%20')
+
             namex = links[i].strip().replace(urlm,'') if '://' in links[i].strip() and links[i].strip().replace(url,'') !='' else parsed_url.path.split('/')[-1]
             nameeex = namex if namex != '' and 'NoLinkFound' else 'NA'
             namme = nameeex.replace("\t", "").replace(":", "").replace("/","").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("/u","").replace('"','').replace('mp4','').replace('mkv','').replace('m3u8','').strip()[:60] + f"({res})" + "GrootJI"
@@ -541,7 +502,7 @@ async def txt_handler(bot: Client, m: Message):
                 prog = await m.reply_text(Show)
                 cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
                 if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
-                	
+                	url = urlaky
                     try:
                         ka=await helper.aio(url,name)
                         await prog.delete (True)
@@ -568,7 +529,7 @@ async def txt_handler(bot: Client, m: Message):
                     time.sleep(1)
             except Exception as e:
                 logging.error(e)
-                await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{urlm}`")
+                await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{url}`")
                 if "NoLinkFound" != url:
                  count+=1
                 await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {url}\n**Error** - `{e}`")
