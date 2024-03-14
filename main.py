@@ -25,12 +25,14 @@ import sys ,io
 import re
 import os
 from pyrogram.types import InputMediaDocument
+import time
 import random 
 from psutil import disk_usage, cpu_percent, swap_memory, cpu_count, virtual_memory, net_io_counters, boot_time
 import asyncio
 from pytube import Playlist
 from pyrogram import Client, filters
 from pyrogram.errors.exceptions import MessageIdInvalid
+import os
 from moviepy.editor import *
 import yt_dlp
 from bs4 import BeautifulSoup
@@ -502,8 +504,9 @@ async def txt_handler(bot: Client, m: Message):
                 prog = await m.reply_text(Show)
                 cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
                 if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
-                	url = urlaky
+            
                     try:
+                        url = urlaky
                         ka=await helper.aio(url,name)
                         await prog.delete (True)
                         time.sleep(1)
