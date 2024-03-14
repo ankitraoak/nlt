@@ -451,10 +451,6 @@ async def txt_handler(bot: Client, m: Message):
             url = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').replace("d1d34p8vz63oiq", "d26g5bnklkwsh4").replace("pw2.pc.cdn.bitgravity.com","d26g5bnklkwsh4.cloudfront.net").replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","").replace("d3nzo6itypaz07", "d26g5bnklkwsh4").replace("dn6x93wafba93", "d26g5bnklkwsh4").replace("d2tiz86clzieqa", "d26g5bnklkwsh4").replace("vod.teachx.in", "d3igdi2k1ohuql.cloudfront.net").replace("downloadappx.appx.co.in", "d33g7sdvsfd029.cloudfront.net").strip()
             parsed_url = urlparse(url)
 
-            urla = links[i].split('://', 1)[1].split('.pdf', 1)[0] + '.pdf' if '://' in links[i] else 'nolinkfound'
-            urlak =  'https://'  + urla if urla != 'nolinkfound' else 'NoLinkFound'
-            urlaky = urlak.replace(' ', '%20')
-
             namex = links[i].strip().replace(urlm,'') if '://' in links[i].strip() and links[i].strip().replace(url,'') !='' else parsed_url.path.split('/')[-1]
             nameeex = namex if namex != '' and 'NoLinkFound' else 'NA'
             namme = nameeex.replace("\t", "").replace(":", "").replace("/","").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("/u","").replace('"','').replace('mp4','').replace('mkv','').replace('m3u8','').strip()[:60] + f"({res})" + "GrootJI"
@@ -487,8 +483,7 @@ async def txt_handler(bot: Client, m: Message):
             	 else:
 
             	 	url = urlx
-            elif ".pdf" in url:
-                url = urlaky
+            elif ".pdf" in url:             
                 cmd = "pdf"
             if "youtu" in url:
                 ytf = f"b[height<={raw_text22}][ext=mp4]/bv[height<={raw_text22}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
@@ -534,7 +529,7 @@ async def txt_handler(bot: Client, m: Message):
                 if "NoLinkFound" != url:
                  count+=1
                 await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {url}\n**Error** - `{e}`")
-                time.sleep(20)
+                time.sleep(10)
                 continue
     except Exception as e:
         logging.error(e)
