@@ -90,92 +90,35 @@ def humanbytes(size):
     return f"{str(round(size, 2))} {Dic_powerN[n]}B"
 
 
-
-
-
-import os
-
-def process_links(input_file, output_file):
-    output = []
-    with open(input_file, 'r') as f:
-        for line in f:
-            link = line.strip()
-            link_parts = link.split(':')
-            prefix = link_parts[0] + ': ' if len(link_parts) > 1 else ''
-            if '.pdf' in link:
-                urla = link.split('://', 1)[1].split('.pdf', 1)[0] + '.pdf'
-            else:
-                urla = link.split('://', 1)[1].split('\n', 1)[0]
-            urlak = 'https://' + urla if urla != 'nolinkfound' else 'NoLinkFound'
-            urlaky = urlak.replace(' ', '%20')
-            output.append(prefix + urlaky)
-    # Ensure the directory exists
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
-    # Write the processed links to an output file
-    with open(output_file, 'w') as out_f:
-        out_f.write("\n".join(output))
-
-@bot.on_message(filters.command(["fix"]) & filters.chat(auth_users))
+@bot.on_message(filters.command(["fix"]))
 async def fix(bot: Client, m: Message):
-    editable = await m.reply_text("**Hello Dear,** I am Text File url converter Bot.\nI can download **PDFs of vision** from text file one by one.\n\n**Developer: GrootJI** \n**Language:** Python\n**Framework:** 🔥Pyrogram\n\nNow Send Your **TXT File:-**\n")
-    input_msg = await bot.listen(editable.chat.id)
-    
-    file_path = await input_msg.download(file="./downloads/")
+    editable = await m.reply_text("Please send a text file. I will fix its URLs.")
+    input9: Message = await bot.listen(editable.chat.id)
+    x = await input9.download()
+    input_file = x
+    output_file = 'downloads/GrootJI_' + os.path.basename(input_file)  # Prefix added to the output file name
+    def convert_links(input_file, output_file):
+        with open(input_file, 'r') as file:
+            links = file.readlines()
 
-    # Define the output file path
-    output_file = f"{os.path.splitext(file_path)[0]}_processed.txt"
-    
-    # Process the links from the input file
-    process_links(file_path, output_file)
+        with open(output_file, 'w') as out_file:
+            for link in links:
+                link_parts = link.split(':')
+                prefix = link_parts[0] + ': ' if len(link_parts) > 1 else ''  # Preserve the prefix if exists
+                if '.pdf' in link:
+                    urla = link.split('://', 1)[1].split('.pdf', 1)[0] + '.pdf'
+                else:
+                    urla = link.split('://', 1)[1].split('\n', 1)[0]
+                urlak = 'https://' + urla if urla != 'nolinkfound' else 'NoLinkFound'
+                urlaky = urlak.replace(' ', '%20')
+                out_file.write(prefix + urlaky + '\n')
 
-    # Optionally, you can send the processed links back to the user
-    await m.reply_text("Links processed successfully! Here's the processed links file: ", document=output_file)
+    convert_links(input_file, output_file)
+    await m.reply_document(document=output_file, caption="Here is your txt file.")
+    os.remove(output_file)
+    os.remove(input_file)
 
 
-
-
-
-#
-
-
-
-
-
-#@bot.on(events.NewMessage(pattern='/pdf'))
-#async def c_pdf(event):
- #   await event.respond("**Hello, I am CW pdf DL Bot.**\n\nSend TXT file to download.")
-#@bot.on_message(filters.command(["pdf"]) & (filters.chat(auth_users)))
-#async def d_pdf(bot: Client, m: Message):
-
- #   editable = await m.reply_text("**Hello I am CW pdf DL Bot\n\nSend TXT To convert.**")
-   # Get the incoming message containing the text file
-  #  input_message = await bot.listen(editable.chat.id)
-    
-    # Download the text file
-   # file_path = await input_message.download(file_name="./")
-
-  #  try:
-        # Read the content of the text file
-   #     with open(file_path, "r") as f:
-    #        content = f.read().split("\n")
-     #       fixed_urls = []
-            # Process each URL in the text file
-      #      for url in content:
-                # Fix the URL by replacing spaces with %20
-       #         fixed_url = url.strip().replace(' ', '%20')
-        #        fixed_urls.append(fixed_url)
-            
-            # Create a temporary text file containing the fixed URLs
-         #   temp_file_path = "fixed_urls.txt"
-          #  with open(temp_file_path, "w") as temp_file:
-           #     temp_file.write("\n".join(fixed_urls))
-            
-        # Send the temporary text file as a document
-   #     await m.reply_document(document=temp_file_path, caption="Here is your fixed file.")
-            
-     # Remove the temporary text file
-   # os.remove(temp_file_path)
-	
 
 @bot.on_message(filters.command(["GR"])&(filters.chat(auth_users)))
 async def c_pdf(bot: Client, m: Message):
@@ -549,12 +492,6 @@ async def txt_handler(bot: Client, m: Message):
             urlx = links[i].split('://', 1)[1].split(' ', 1)[0] if '://' in links[i] else 'nolinkfound'
             urly =  'https://'  + urlx if urlx != 'nolinkfound' else 'NoLinkFound'
             urlm = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').strip()
-
-            urla = links[i].split('://', 1)[1].split('.pdf', 1)[0] + '.pdf' if '://' in links[i] else 'nolinkfound'
-            urlak =  'https://'  + urla if urla != 'nolinkfound' else 'NoLinkFound'
-            urlaky = urlak.replace(' ', '%20')
-            
-
             url = urly.replace('"', '').replace(',', '').replace('(','').replace(')','').replace("d1d34p8vz63oiq", "d26g5bnklkwsh4").replace("pw2.pc.cdn.bitgravity.com","d26g5bnklkwsh4.cloudfront.net").replace("file/d/","uc?export=download&id=").replace("www.youtube-nocookie.com/embed", "youtu.be").replace("?modestbranding=1", "").replace("/view?usp=sharing","").replace("d3nzo6itypaz07", "d26g5bnklkwsh4").replace("dn6x93wafba93", "d26g5bnklkwsh4").replace("d2tiz86clzieqa", "d26g5bnklkwsh4").replace("vod.teachx.in", "d3igdi2k1ohuql.cloudfront.net").replace("downloadappx.appx.co.in", "d33g7sdvsfd029.cloudfront.net").strip()
             parsed_url = urlparse(url)
             namex = links[i].strip().replace(urlm,'') if '://' in links[i].strip() and links[i].strip().replace(url,'') !='' else parsed_url.path.split('/')[-1]
@@ -604,9 +541,8 @@ async def txt_handler(bot: Client, m: Message):
                 prog = await m.reply_text(Show)
                 cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
                 if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
-                    url=urlaky
+                	
                     try:
-                        
                         ka=await helper.aio(url,name)
                         await prog.delete (True)
                         time.sleep(1)
@@ -632,7 +568,7 @@ async def txt_handler(bot: Client, m: Message):
                     time.sleep(1)
             except Exception as e:
                 logging.error(e)
-                await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{url}`")
+                await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{urlm}`")
                 if "NoLinkFound" != url:
                  count+=1
                 await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {url}\n**Error** - `{e}`")
