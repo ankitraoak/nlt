@@ -15,7 +15,6 @@ from urllib.parse import parse_qs, urlparse
 from subprocess import getstatusoutput
 import helper
 import logging
-import time
 import aiohttp
 import asyncio
 import aiofiles
@@ -32,7 +31,6 @@ import asyncio
 from pytube import Playlist
 from pyrogram import Client, filters
 from pyrogram.errors.exceptions import MessageIdInvalid
-import os
 from moviepy.editor import *
 import yt_dlp
 from bs4 import BeautifulSoup
@@ -490,6 +488,7 @@ async def txt_handler(bot: Client, m: Message):
 
             	 	url = urlx
             elif ".pdf" in url:
+                url = urlaky
                 cmd = "pdf"
             if "youtu" in url:
                 ytf = f"b[height<={raw_text22}][ext=mp4]/bv[height<={raw_text22}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
@@ -504,9 +503,8 @@ async def txt_handler(bot: Client, m: Message):
                 prog = await m.reply_text(Show)
                 cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
                 if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
-                    url = urlaky
-                    try:
-                        
+                  
+                    try:                      
                         ka=await helper.aio(url,name)
                         await prog.delete (True)
                         time.sleep(1)
