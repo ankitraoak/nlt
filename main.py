@@ -489,8 +489,7 @@ async def txt_handler(bot: Client, m: Message):
             	 	url = urlx
             elif ".pdf" in url:             
                 cmd = "pdf"
-            elif "cwmediabkt99" in url:             
-                cmd = "cwmediabkt99"                
+           
             if "youtu" in url:
                 ytf = f"b[height<={raw_text22}][ext=mp4]/bv[height<={raw_text22}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
             else:
