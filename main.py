@@ -524,28 +524,7 @@ async def txt_handler(bot: Client, m: Message):
                         time.sleep(e.x+1)
                         continue
 
-                if cmd == "cwmediabkt99" in url:
-                  
-                    try:
-                        url = urlaky                      
-                        ka=await helper.aio(url,name)
-                        await prog.delete (True)
-                        time.sleep(1)
-                        reply = await m.reply_text(f"Trying To Upload - `{name}`")
-                        time.sleep(1)
-                        copy = await bot.send_document(chat_id = m.chat.id, document = ka, caption=f'**Index: ** {str(count).zfill(3)}\n**File Name: ** {name}.pdf\n**Batch: ** {b_name}\n\n{creditx}')
-                        await copy.copy(chat_id = log_channel)
-                        count+=1
-                        await reply.delete (True)
-                        time.sleep(10)
-                        os.remove(ka)
-                        time.sleep(3)
-                    except FloodWait as e:
-                        logging.error(e)
-                        await m.reply_text(str(e))
-                        time.sleep(e.x+1)
-                        continue
-                                   
+             
                 else:
                     res_file = await helper.download_video(url,cmd, name)
                     filename = res_file
@@ -554,10 +533,10 @@ async def txt_handler(bot: Client, m: Message):
                     time.sleep(1)
             except Exception as e:
                 logging.error(e)
-                await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{url}`")
+                await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{urlaky}`")
                 if "NoLinkFound" != url:
                  count+=1
-                await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {url}\n**Error** - `{e}`")
+                await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {urlaky}\n**Error** - `{e}`")
                 time.sleep(10)
                 continue
     except Exception as e:
