@@ -1,4 +1,5 @@
 import requests
+import urllib.request
 import json
 import subprocess
 from pyrogram import Client,filters
@@ -366,7 +367,7 @@ async def txt_handler(bot: Client, m: Message):
     file_name, ext = os.path.splitext(os.path.basename(x))
     credit = "Downloaded by " + f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
     try:         
-        with open(x, "r") as f:
+        with open(x, "r", encoding="utf-8") as f:
              content = f.read()
              content = content.split("\n")
         links = []
@@ -464,6 +465,7 @@ async def txt_handler(bot: Client, m: Message):
             	params = (('url', f'{url}'),)
             	response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
             	url = response.json()['url']
+               
             elif "visionias" in url:
                 async with ClientSession() as session:
                     async with session.get(url, headers={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 'Accept-Language': 'en-US,en;q=0.9', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive', 'Pragma': 'no-cache', 'Referer': 'http://www.visionias.in/', 'Sec-Fetch-Dest': 'iframe', 'Sec-Fetch-Mode': 'navigate', 'Sec-Fetch-Site': 'cross-site', 'Upgrade-Insecure-Requests': '1', 'User-Agent': 'Mozilla/5.0 (Linux; Android 12; RMX2121) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36', 'sec-ch-ua': '"Chromium";v="107", "Not=A?Brand";v="24"', 'sec-ch-ua-mobile': '?1', 'sec-ch-ua-platform': '"Android"',}) as resp:
@@ -475,21 +477,18 @@ async def txt_handler(bot: Client, m: Message):
             elif "nocookie.com" in url:
                 url = url.replace('-nocookie', '')
             elif "d9an9suwcevit" in url:
-
             	 urlx = url.replace("master.m3u8", "master_tunak_tunak_tun.m3u8")
-
             	 response = requests.get(urlx)
-
             	 if response.status_code != 200:
-
             	 	url = url.replace("master_tunak_tunak_tun.m3u8", "master.m3u8")
-
             	 else:
-
             	 	url = urlx
+                     
+            elif "cwmediabkt99" in url:
+                cmd = "cwmediabkt99"         
             elif ".pdf" in url:             
                 cmd = "pdf"
-           
+               
             if "youtu" in url:
                 ytf = f"b[height<={raw_text22}][ext=mp4]/bv[height<={raw_text22}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
             else:
@@ -502,7 +501,41 @@ async def txt_handler(bot: Client, m: Message):
                 Show = f"**Trying To Download:-**\n\n**Name :-** `{name}`\n**Quality :-** `{res}`\n\n**Piracy is illegal 🚫**\n\nEnter /terms To know our terms and conditions."
                 prog = await m.reply_text(Show)
                 cc = f'**Index: **{str(count).zfill(3)}\n**File Name: **{name}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
-                if cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
+                if "cwmediabkt99" in url:
+                    
+                    try:
+                        url = urlaky 
+                        reply = await m.reply_text(f"Trying To Upload - `{name}`")
+                        time.sleep(1)
+                     #   url = urlaky
+                        output_file = f"{name}.pdf"                    
+                        headers = {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }      
+                        request = urllib.request.Request(url, headers=headers)
+                        with urllib.request.urlopen(request) as response, open(output_file, 'wb') as out_file:
+                          data = response.read()
+                          out_file.write(data)
+                          print(url)
+
+
+ 
+                        copy = await bot.send_document(chat_id=m.chat.id,document=f'{name}.pdf', caption=f'**Index: ** {str(count).zfill(3)}\n**File Name: ** {name}.pdf\n**Batch: ** {b_name}\n\n{creditx}')
+                        await copy.copy(chat_id = log_channel)
+                        count += 1
+                        await reply.delete (True)
+                        os.remove(f'{name}.pdf')
+                               
+
+
+                    except FloodWait as e:
+                        logging.error(e)
+                        await m.reply_text(str(e))
+                        time.sleep(e.x+1)
+                        continue
+
+
+                elif cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
                   
                     try:                      
                         ka=await helper.aio(url,name)
@@ -523,7 +556,8 @@ async def txt_handler(bot: Client, m: Message):
                         time.sleep(e.x+1)
                         continue
 
-             
+
+                                   
                 else:
                     res_file = await helper.download_video(url,cmd, name)
                     filename = res_file
@@ -532,10 +566,10 @@ async def txt_handler(bot: Client, m: Message):
                     time.sleep(1)
             except Exception as e:
                 logging.error(e)
-                await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{urlaky}`")
+                await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{url}`")
                 if "NoLinkFound" != url:
                  count+=1
-                await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {urlaky}\n**Error** - `{e}`")
+                await bot.send_message(log_channel, f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - {url}\n**Error** - `{e}`")
                 time.sleep(10)
                 continue
     except Exception as e:
