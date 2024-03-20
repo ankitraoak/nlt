@@ -507,6 +507,7 @@ async def txt_handler(bot: Client, m: Message):
                         url = urlaky 
                         reply = await m.reply_text(f"Trying To Upload - `{name}`")
                         time.sleep(1)
+                        
                      #   url = urlaky
                         output_file = f"{name}.pdf"                    
                         headers = {
@@ -516,10 +517,8 @@ async def txt_handler(bot: Client, m: Message):
                         with urllib.request.urlopen(request) as response, open(output_file, 'wb') as out_file:
                           data = response.read()
                           out_file.write(data)
-                          print(url)
-
-
- 
+                        await prog.delete (True)
+                        time.sleep(1)
                         copy = await bot.send_document(chat_id=m.chat.id,document=f'{name}.pdf', caption=f'**Index: ** {str(count).zfill(3)}\n**File Name: ** {name}.pdf\n**Batch: ** {b_name}\n\n{creditx}')
                         await copy.copy(chat_id = log_channel)
                         count += 1
@@ -531,6 +530,7 @@ async def txt_handler(bot: Client, m: Message):
                     except FloodWait as e:
                         logging.error(e)
                         await m.reply_text(str(e))
+                        time.sleep(10)
                         time.sleep(e.x+1)
                         continue
 
