@@ -486,7 +486,7 @@ async def txt_handler(bot: Client, m: Message):
                      
             elif "cwmediabkt99" in url:
                 cmd = "cwmediabkt99"         
-            elif ".pdf" in url:             
+            elif ".pdf" in urlaky or ".pdf"  in urlaky or "drive"  in urlaky:           
                 cmd = "pdf"
                
             if "youtu" in url:
@@ -538,7 +538,8 @@ async def txt_handler(bot: Client, m: Message):
 
                 elif cmd == "pdf" in url or ".pdf"  in url or "drive"  in url:
                   
-                    try:                      
+                    try:
+                        url =urlaky                      
                         ka=await helper.aio(url,name)
                         await prog.delete (True)
                         time.sleep(1)
@@ -582,4 +583,3 @@ async def txt_handler(bot: Client, m: Message):
     batch.clear() 
 
 bot.run()
-
