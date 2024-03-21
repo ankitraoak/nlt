@@ -522,9 +522,9 @@ async def txt_handler(bot: Client, m: Message):
                         copy = await bot.send_document(chat_id=m.chat.id,document=f'{name}.pdf', caption=f'**Index: ** {str(count).zfill(3)}\n**File Name: ** {name}.pdf\n**Batch: ** {b_name}\n\n{creditx}')
                         await copy.copy(chat_id = log_channel)
                         count += 1
-                        await reply.delete (True)
-			time.sleep(10)    
+                        await reply.delete (True)   
                         os.remove(f'{name}.pdf')
+                        time.sleep(10) 
                                
 
 
@@ -582,3 +582,4 @@ async def txt_handler(bot: Client, m: Message):
     batch.clear() 
 
 bot.run()
+
