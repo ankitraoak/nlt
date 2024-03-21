@@ -523,6 +523,7 @@ async def txt_handler(bot: Client, m: Message):
                         await copy.copy(chat_id = log_channel)
                         count += 1
                         await reply.delete (True)
+			time.sleep(10)    
                         os.remove(f'{name}.pdf')
                                
 
@@ -530,7 +531,7 @@ async def txt_handler(bot: Client, m: Message):
                     except FloodWait as e:
                         logging.error(e)
                         await m.reply_text(str(e))
-                        time.sleep(10)
+                        
                         time.sleep(e.x+1)
                         continue
 
