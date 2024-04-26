@@ -365,7 +365,7 @@ async def txt_handler(bot: Client, m: Message):
     await bot.send_document(log_channel, x)
     await input0.delete(True)
     file_name, ext = os.path.splitext(os.path.basename(x))
-    credit = "Downloaded by " + f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
+    credit = "Downloaded by ➤" + f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
     try:         
         with open(x, "r", encoding="utf-8") as f:
              content = f.read()
@@ -502,7 +502,7 @@ async def txt_handler(bot: Client, m: Message):
             try:
                 Show = f"**Trying To Download:-**\n\n**Name :-** `{name}`\n**Quality :-** `{res}`\n\n**Piracy is illegal 🚫**\n\nEnter /terms To know our terms and conditions."
                 prog = await m.reply_text(Show)
-                cc = f'**Index ➤ **{str(count).zfill(3)}**     Quality ➤** {res}\n**Title ➤ **{namepdf}.mkv\n**Batch: **{b_name}\n\n**{creditx}**'
+                cc = f'**Index ➤ **{str(count).zfill(3)}**     Quality ➤** {res}\n**Title ➤ **{namepdf}.mkv\n**Batch ➤ **{b_name}\n\n**{creditx}**'
                 if "cwmediabkt99" in url:
                     
                     try:
