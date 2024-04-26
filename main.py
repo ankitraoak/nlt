@@ -566,6 +566,7 @@ async def txt_handler(bot: Client, m: Message):
                     await helper.send_vid(bot, m,cc,filename,thumb,name,prog)
                     count+=1
                     time.sleep(1)
+                    os.remove(res_file)
             except Exception as e:
                 logging.error(e)
                 await m.reply_text(f"**Failed To Download ❌**\n**Name** - {name}\n**Link** - `{url}`")
